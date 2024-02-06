@@ -1,14 +1,19 @@
 package jpabook.jpashop.domain;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jpabook.jpashop.domain.item.Item;
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "order_item")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //JPA 쓰면서 protected 키워드는 생성해서 쓰지말라는 의미
 public class OrderItem {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "order_item_id")
     private Long id;
 
@@ -36,13 +41,19 @@ public class OrderItem {
     }
 
     //==비즈니스 로직==//
-    /** 주문 취소 */
+
+    /**
+     * 주문 취소
+     */
     public void cancel() {
         getItem().addStock(count);
     }
 
     //==조회 로직==//
-    /** 주문상품 전체 가격 조회 */
+
+    /**
+     * 주문상품 전체 가격 조회
+     */
     public int getTotalPrice() {
         return getOrderPrice() * getCount();
     }
